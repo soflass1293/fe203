@@ -1,10 +1,12 @@
 use rocket::form::Form;
+use rocket::fs::NamedFile;
+use rocket::get;
 
 use crate::helpers::{get_todos, remove_todo, add_todo, toggle_todo, stringify};
 
 #[get("/")]
-pub fn index() -> String {
-    format!("Running")
+pub async fn index() -> Result<NamedFile, std::io::Error> {
+    NamedFile::open("static/index.html").await
 }
 
 #[get("/api/todos")]
