@@ -33,9 +33,12 @@
       border-radius: 24px;
     }
     .btn-small {
-      border-radius: 8px;
-      height: 16px;
-      width: 16px;
+      border-radius: 16px;
+      height: 32px;
+      width: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .collection {
       background-color: #f5f5f5;
@@ -117,16 +120,17 @@
                 </div>
                 {{ #completed }}
                 <button
-                  class="btn btn-warning btn-sm"
+                  class="btn btn-warning btn-small my-auto"
                   hx-trigger="click"
                   hx-patch="http://localhost:8000/api/todos/{{id}}/completed"
                   hx-target="#block-response"
                 >
                   <i class="fa fa-times"></i>
                 </button>
+                <span class="mx-2 my-auto text-success"> Completed </span>
                 {{ /completed }} {{ ^completed }}
                 <button
-                  class="btn btn-success btn-sm"
+                  class="btn btn-success btn-small my-auto"
                   hx-trigger="click"
                   hx-patch="http://localhost:8000/api/todos/{{id}}/completed"
                   hx-target="#block-response"
