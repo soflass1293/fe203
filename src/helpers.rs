@@ -15,7 +15,6 @@ pub fn add_todo(title: &str) {
 pub fn remove_todo(id: &str) {
     let mut map = get();
     map.remove(id);
-    println!("{:#?}", map);
     set(map)
 }
 
