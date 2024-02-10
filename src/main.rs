@@ -3,23 +3,22 @@ extern crate rocket;
 use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::Header;
 use rocket::{Request, Response};
-use std::fs;
+mod db;
+mod helpers;
+mod todo;
 mod utils;
 mod routes;
 
 #[launch]
 fn rocket() -> _ {
-    if fs::metadata("src/db.json").is_err() {
-        fs::write("src/db.json", "{}").expect("Unable to write file");
-    }
     rocket::build().attach(Cors).mount(
         "/",
         routes![
-            routes::index,
             all_options,
-            routes::get_todos,
+            routes::index,
+            routes::retrieve_todos,
             routes::post_todo,
-            routes::toggle_completed,
+            routes::patch_todo_completed,
             routes::delete_todo
         ],
     )

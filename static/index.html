@@ -74,7 +74,10 @@
           <h1>Todos</h1>
           <form
             hx-target="#block-response"
+            hx-trigger="submit"
             hx-post="http://localhost:8000/api/todos"
+            mustache-array-template="template-response"
+            onsubmit="onSubmit()"
           >
             <div class="form-group">
               <label for="inputTitle">Title</label>
@@ -157,5 +160,14 @@
         </div>
       </div>
     </div>
+    <script>
+      function onSubmit() {
+        const input = document.querySelector("input");
+        setTimeout(() => {
+          input.value = "";
+          input.focus();
+        }, 100);
+      }
+    </script>
   </body>
 </html>

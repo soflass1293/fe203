@@ -1,5 +1,6 @@
-use std::iter;
 use rand::Rng;
+use std::iter;
+
 pub fn id(len: usize) -> String {
     const CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let mut rng = rand::thread_rng();
