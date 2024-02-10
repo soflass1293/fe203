@@ -8,17 +8,34 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+    />
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
     <script src="https://unpkg.com/mustache@latest"></script>
     <title>Todos</title>
   </head>
   <style>
+    body {
+      background-color: #212112;
+    }
+    .wrapper {
+      background-color: white;
+      border-radius: 24px;
+      padding: 36px;
+    }
     input.form-control {
       border-radius: 24px;
     }
     .btn {
       border-radius: 24px;
+    }
+    .btn-small {
+      border-radius: 8px;
+      height: 16px;
+      width: 16px;
     }
     .collection {
       background-color: #f5f5f5;
@@ -48,18 +65,19 @@
     <div class="container">
       <div class="row">
         <div
-          class="col-xs-12 col-6 mx-auto my-5"
+          class="col-xs-12 col-6 mx-auto my-5 wrapper"
           hx-ext="client-side-templates"
         >
           <h1>Todos</h1>
           <form
-            hx-post="https://jsonplaceholder.typicode.com/todos"
             hx-target="#block-response"
+            hx-post="http://localhost:8000/api/todos"
           >
             <div class="form-group">
               <label for="inputTitle">Title</label>
               <input
                 type="text"
+                name="title"
                 class="form-control"
                 id="inputTitle"
                 aria-describedby="smallTitle"
@@ -76,7 +94,6 @@
             id="block-response"
             hx-get="http://localhost:8000/api/todos"
             hx-trigger="load"
-            hx-swap="innerHTML"
             hx-target="#block-response"
             mustache-array-template="template-response"
           >
@@ -85,25 +102,51 @@
               role="status"
             ></div>
           </div>
-          <div
-            class="item"
-            id="block-response"
-            hx-trigger="click"
-            hx-delete="https://jsonplaceholder.typicode.com/todos/{{id}}"
-            hx-swap="innerHTML"
-          >
-            {{title}}
-          </div>
           <template id="template-response">
             {{#data}}
-            <div
-              class="item"
-              id="block-response"
-              hx-trigger="click"
-              hx-get="https://jsonplaceholder.typicode.com/todos/{{id}}"
-              hx-swap="innerHTML"
-            >
-              {{title}}
+            <div class="d-flex justify-content-between item">
+              <div class="d-flex">
+                <div
+                  class="item"
+                  id="block-response"
+                  hx-trigger="click"
+                  hx-get="https://jsonplaceholder.typicode.com/todos/{{id}}"
+                  hx-swap="innerHTML"
+                >
+                  {{title}}
+                </div>
+                {{ #completed }}
+                <button
+                  class="btn btn-warning btn-sm"
+                  hx-trigger="click"
+                  hx-patch="http://localhost:8000/api/todos/{{id}}/completed"
+                  hx-target="#block-response"
+                >
+                  <i class="fa fa-times"></i>
+                </button>
+                {{ /completed }} {{ ^completed }}
+                <button
+                  class="btn btn-success btn-sm"
+                  hx-trigger="click"
+                  hx-patch="http://localhost:8000/api/todos/{{id}}/completed"
+                  hx-target="#block-response"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                {{ /completed }}
+              </div>
+              <button
+                class="btn btn-danger btn-sm"
+                hx-trigger="click"
+                hx-delete="http://localhost:8000/api/todos/{{id}}"
+                hx-target="#block-response"
+              >
+                Delete
+              </button>
+            </div>
+            {{/data}} {{ ^data }}
+            <div class="d-flex justify-content-center">
+              <span class="text-mutetd"> No data </span>
             </div>
             {{/data}}
           </template>
